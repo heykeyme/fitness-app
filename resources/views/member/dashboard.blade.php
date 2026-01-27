@@ -11,12 +11,16 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
                     <h3 class="text-lg font-semibold text-gray-700">My Membership</h3>
-                    <p class="text-xl font-bold text-indigo-600">Gold Plan</p>
-                    <p class="text-gray-600">Expires on: 2026-12-31</p>
+                    @if($subscription)
+                        <p class="text-xl font-bold text-indigo-600">{{ $subscription->membershipPlan->name }}</p>
+                        <p class="text-gray-600">Expires on: {{ $subscription->end_date->format('Y-m-d') }}</p>
+                    @else
+                        <p class="text-gray-600">No active subscription.</p>
+                    @endif
                 </div>
             </div>
 
-            <!-- My Upcoming Classes -->
+            <!-- My Upcoming Classes (Dummy Data) -->
             <div class="mt-8 bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
                     <h3 class="text-lg font-semibold text-gray-700 mb-4">My Upcoming Classes</h3>
@@ -49,14 +53,32 @@
                 <div class="p-6 bg-white border-b border-gray-200">
                     <h3 class="text-lg font-semibold text-gray-700 mb-4">Recent Activity</h3>
                     <ul class="divide-y divide-gray-200">
-                        <li class="py-4 flex">
-                            <span class="font-bold mr-2">Checked in</span>
-                            <span>at 2026-01-27 17:30</span>
-                        </li>
-                        <li class="py-4 flex">
-                            <span class="font-bold mr-2">Booked a class:</span>
-                            <span>Yoga on 2026-01-28</span>
-                        </li>
+                        @forelse($activities as $activity)
+                            <li class="py-4 flex">
+                                <span class="font-bold mr-2">{{ $activity->description }}</span>
+                                <span>{{ $activity->created_at->diffForHumans() }}</span>
+                            </li>
+                        @empty
+                            <li class="py-4">No recent activity.</li>
+                        @endforelse
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Announcements -->
+            <div class="mt-8 bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 bg-white border-b border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-700 mb-4">Announcements</h3>
+                    <ul class="divide-y divide-gray-200">
+                        @forelse($announcements as $announcement)
+                            <li class="py-4">
+                                <h4 class="text-md font-semibold text-gray-800">{{ $announcement->title }}</h4>
+                                <p class="text-gray-600">{{ $announcement->content }}</p>
+                                <small class="text-gray-500">{{ $announcement->created_at->diffForHumans() }}</small>
+                            </li>
+                        @empty
+                            <li class="py-4">No announcements at the moment.</li>
+                        @endforelse
                     </ul>
                 </div>
             </div>

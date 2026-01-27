@@ -7,6 +7,17 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-8">
+                <div class="p-6 bg-white border-b border-gray-200">
+                    <nav class="flex flex-wrap gap-4">
+                        <a href="{{ route('admin.plans') }}" class="text-blue-500 hover:text-blue-700">Manage Plans</a>
+                        <a href="{{ route('admin.announcements') }}" class="text-blue-500 hover:text-blue-700">Manage Announcements</a>
+                        <a href="{{ route('admin.feedback') }}" class="text-blue-500 hover:text-blue-700">View Feedback</a>
+                        <a href="{{ route('admin.activity-log') }}" class="text-blue-500 hover:text-blue-700">View Activity Log</a>
+                    </nav>
+                </div>
+            </div>
+
             <!-- Stat Cards -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <!-- Total Members -->

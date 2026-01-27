@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             StatusTypeSeeder::class,
             MembershipPlanSeeder::class,
             UserSeeder::class,
+            PaymentMethodSeeder::class,
         ]);
     }
 }
