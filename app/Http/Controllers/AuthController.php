@@ -23,7 +23,7 @@ class AuthController extends Controller
             if ($user->role_id == 1) {
                 return redirect()->intended('/admin/dashboard');
             }
-            return redirect()->intended('/member/home');
+            return redirect()->intended('/member/dashboard');
         }
 
         return back()->withErrors(['email' => 'Invalid credentials']);
@@ -52,7 +52,18 @@ class AuthController extends Controller
         // 3. Log them in automatically
         Auth::login($user);
 
-        return redirect('/member/home')->with('success', 'You have been successfully registered!');
+        return redirect('/member/dashboard')->with('success', 'You have been successfully registered!');
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return redirect('/login');
     }
 
 }
