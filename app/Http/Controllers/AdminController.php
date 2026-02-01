@@ -6,6 +6,7 @@ use App\Models\ActivityLog;
 use App\Models\Announcement;
 use App\Models\Feedback;
 use App\Models\MembershipPlan;
+use App\Models\FitnessClass;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -66,6 +67,33 @@ class AdminController extends Controller
         ]);
 
         return redirect()->route('admin.announcements')->with('success', 'Announcement created successfully.');
+    }
+
+    public function showClasses()
+    {
+        $classes = FitnessClass::orderBy('date')->orderBy('time')->get();
+        return view('admin.classes', compact('classes'));
+    }
+
+    public function storeClass(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+            'date' => 'required|date',
+            'time' => 'required',
+        ]);
+
+        FitnessClass::create($request->all());
+
+        return back()->with('success', 'Class created successfully.');
+    }
+
+    public function destroyClass(FitnessClass $class)
+    {
+        $class->delete();
+
+        return back()->with('success', 'Class deleted successfully.');
     }
 
     public function showFeedback()

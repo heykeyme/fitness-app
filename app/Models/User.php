@@ -65,4 +65,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(ActivityLog::class);
     }
+
+    public function fitnessClasses()
+    {
+        return $this->belongsToMany(FitnessClass::class, 'class_user');
+    }
 }

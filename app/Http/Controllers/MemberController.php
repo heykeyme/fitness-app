@@ -16,8 +16,9 @@ class MemberController extends Controller
         $subscription = $user->subscriptions()->where('status_id', 1)->latest()->first();
         $announcements = Announcement::latest()->take(5)->get();
         $activities = ActivityLog::where('user_id', $user->id)->latest()->take(5)->get();
+        $upcomingClasses = $user->fitnessClasses()->where('date', '>=', now())->orderBy('date')->orderBy('time')->get();
 
-        return view('member.dashboard', compact('user', 'subscription', 'announcements', 'activities'));
+        return view('member.dashboard', compact('user', 'subscription', 'announcements', 'activities', 'upcomingClasses'));
     }
 
     public function showPlans()

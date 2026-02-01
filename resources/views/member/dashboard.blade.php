@@ -20,7 +20,7 @@
                 </div>
             </div>
 
-            <!-- My Upcoming Classes (Dummy Data) -->
+            <!-- My Upcoming Classes -->
             <div class="mt-8 bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
                     <h3 class="text-lg font-semibold text-gray-700 mb-4">My Upcoming Classes</h3>
@@ -33,35 +33,19 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            <tr>
-                                <td class="px-6 py-4 whitespace-nowrap">Yoga</td>
-                                <td class="px-6 py-4 whitespace-nowrap">2026-01-28</td>
-                                <td class="px-6 py-4 whitespace-nowrap">18:00</td>
-                            </tr>
-                            <tr>
-                                <td class="px-6 py-4 whitespace-nowrap">Pilates</td>
-                                <td class="px-6 py-4 whitespace-nowrap">2026-01-30</td>
-                                <td class="px-6 py-4 whitespace-nowrap">19:00</td>
-                            </tr>
+                            @forelse($upcomingClasses as $class)
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $class->name }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ \Carbon\Carbon::parse($class->date)->format('Y-m-d') }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ \Carbon\Carbon::parse($class->time)->format('H:i') }}</td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="3" class="px-6 py-4 whitespace-nowrap text-center text-gray-500">You have no upcoming classes.</td>
+                                </tr>
+                            @endforelse
                         </tbody>
                     </table>
-                </div>
-            </div>
-
-            <!-- Recent Activity -->
-            <div class="mt-8 bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 bg-white border-b border-gray-200">
-                    <h3 class="text-lg font-semibold text-gray-700 mb-4">Recent Activity</h3>
-                    <ul class="divide-y divide-gray-200">
-                        @forelse($activities as $activity)
-                            <li class="py-4 flex">
-                                <span class="font-bold mr-2">{{ $activity->description }}</span>
-                                <span>{{ $activity->created_at->diffForHumans() }}</span>
-                            </li>
-                        @empty
-                            <li class="py-4">No recent activity.</li>
-                        @endforelse
-                    </ul>
                 </div>
             </div>
 

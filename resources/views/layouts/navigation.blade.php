@@ -18,6 +18,27 @@
                     <x-nav-link :href="route($dashboardRoute)" :active="request()->routeIs($dashboardRoute)">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+                    @if (Auth::user()->role_id == 1)
+                        <x-nav-link :href="route('admin.plans')" :active="request()->routeIs('admin.plans')">
+                            {{ __('Manage Plans') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('admin.announcements')" :active="request()->routeIs('admin.announcements')">
+                            {{ __('Manage Announcements') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('admin.classes.index')" :active="request()->routeIs('admin.classes.index')">
+                            {{ __('Manage Classes') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('admin.feedback')" :active="request()->routeIs('admin.feedback')">
+                            {{ __('View Feedback') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('admin.activity-log')" :active="request()->routeIs('admin.activity-log')">
+                            {{ __('View Activity Log') }}
+                        </x-nav-link>
+                    @else
+                        <x-nav-link :href="route('classes.index')" :active="request()->routeIs('classes.index')">
+                            {{ __('Classes') }}
+                        </x-nav-link>
+                    @endif
                 </div>
             </div>
 
@@ -69,6 +90,27 @@
             <x-responsive-nav-link :href="route($dashboardRoute)" :active="request()->routeIs($dashboardRoute)">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
+            @if (Auth::user()->role_id == 1)
+                <x-responsive-nav-link :href="route('admin.plans')" :active="request()->routeIs('admin.plans')">
+                    {{ __('Manage Plans') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('admin.announcements')" :active="request()->routeIs('admin.announcements')">
+                    {{ __('Manage Announcements') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('admin.classes.index')" :active="request()->routeIs('admin.classes.index')">
+                    {{ __('Manage Classes') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('admin.feedback')" :active="request()->routeIs('admin.feedback')">
+                    {{ __('View Feedback') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('admin.activity-log')" :active="request()->routeIs('admin.activity-log')">
+                    {{ __('View Activity Log') }}
+                </x-responsive-nav-link>
+            @else
+                <x-responsive-nav-link :href="route('classes.index')" :active="request()->routeIs('classes.index')">
+                    {{ __('Classes') }}
+                </x-responsive-nav-link>
+            @endif
         </div>
 
         <!-- Responsive Settings Options -->

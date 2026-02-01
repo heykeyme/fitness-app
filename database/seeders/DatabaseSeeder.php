@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             MembershipPlanSeeder::class,
             UserSeeder::class,
             PaymentMethodSeeder::class,
+            FitnessClassSeeder::class,
         ]);
     }
 }
