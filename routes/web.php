@@ -42,3 +42,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/payment/checkout/{plan}', [PaymentController::class, 'checkout'])->name('payment.checkout');
     Route::post('/payment/process', [PaymentController::class, 'process'])->name('payment.process');
 });
+// Simplified Password Reset Routes
+Route::get('forgot-password', [AuthController::class, 'showForgotPasswordForm'])->name('password.request');
+Route::post('forgot-password', [AuthController::class, 'showResetFormWithoutToken'])->name('password.email');
+Route::get('reset-password', [AuthController::class, 'showResetPasswordFormWithoutToken'])->name('password.reset');
+Route::post('reset-password', [AuthController::class, 'resetPasswordWithoutToken'])->name('password.update');

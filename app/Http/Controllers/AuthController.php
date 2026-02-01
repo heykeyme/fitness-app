@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User; // Added for User model
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash; // Added for Hash facade
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -19,7 +19,6 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
             
-            // Redirect based on Role ID
             if ($user->role_id == 1) {
                 return redirect()->intended('/admin/dashboard');
             }
@@ -34,14 +33,12 @@ class AuthController extends Controller
     }
 
     public function register(Request $request) {
-        // 1. Validation
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
         ]);
 
-        // 2. Create User (Notice role_id is hardcoded to 2 for Members)
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -49,7 +46,6 @@ class AuthController extends Controller
             'role_id' => 2, 
         ]);
 
-        // 3. Log them in automatically
         Auth::login($user);
 
         return redirect('/member/dashboard')->with('success', 'You have been successfully registered!');
@@ -58,12 +54,50 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         Auth::logout();
-
         $request->session()->invalidate();
-
         $request->session()->regenerateToken();
-
         return redirect('/login');
     }
 
+    public function showForgotPasswordForm()
+    {
+        return view('auth.passwords.email');
+    }
+
+    public function showResetFormWithoutToken(Request $request)
+    {
+        $request->validate(['email' => 'required|email']);
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user) {
+            return back()->withErrors(['email' => 'We can\'t find a user with that email address.']);
+        }
+
+        return redirect()->route('password.reset', ['email' => $user->email]);
+    }
+
+    public function showResetPasswordFormWithoutToken(Request $request)
+    {
+        return view('auth.passwords.reset', ['email' => $request->email]);
+    }
+
+    public function resetPasswordWithoutToken(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|confirmed|min:8',
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user) {
+            return back()->withErrors(['email' => 'We can\'t find a user with that email address.']);
+        }
+
+        $user->forceFill([
+            'password' => Hash::make($request->password)
+        ])->save();
+
+        return redirect()->route('login')->with('status', 'Your password has been reset!');
+    }
 }
