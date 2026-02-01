@@ -30,11 +30,16 @@ class AdminController extends Controller
             'description' => 'required|string',
         ]);
 
-        $plan = MembershipPlan::create($request->all());
+        $plan = MembershipPlan::create([
+            'plan_name' => $request->name,
+            'price' => $request->price,
+            'description' => $request->description,
+            'duration_days' => 30, // default to 30 days
+        ]);
 
         ActivityLog::create([
             'user_id' => Auth::id(),
-            'description' => 'Created a new membership plan: ' . $plan->name,
+            'action' => 'Created a new membership plan: ' . $plan->plan_name,
         ]);
 
         return redirect()->route('admin.plans')->with('success', 'Plan created successfully.');
@@ -48,16 +53,16 @@ class AdminController extends Controller
 
     public function storeAnnouncement(Request $request)
     {
-        $request->validate([
+        $validatedData = $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
         ]);
 
-        $announcement = Announcement::create($request->all());
+        $announcement = Announcement::create($validatedData);
 
         ActivityLog::create([
             'user_id' => Auth::id(),
-            'description' => 'Created a new announcement: ' . $announcement->title,
+            'action' => 'Created a new announcement: ' . $announcement->title,
         ]);
 
         return redirect()->route('admin.announcements')->with('success', 'Announcement created successfully.');

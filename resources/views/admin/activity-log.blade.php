@@ -17,7 +17,7 @@
                     @foreach($logs as $log)
                         <tr>
                             <td class="px-6 py-4 whitespace-nowrap">{{ $log->user->name }}</td>
-                            <td class="px-6 py-4">{{ $log->description }}</td>
+                            <td class="px-6 py-4">{{ $log->action }}</td>
                             <td class="px-6 py-4 whitespace-nowrap">{{ $log->created_at->diffForHumans() }}</td>
                         </tr>
                     @endforeach

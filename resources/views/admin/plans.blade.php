@@ -51,8 +51,8 @@
                         <tbody class="bg-white divide-y divide-gray-200">
                             @foreach($plans as $plan)
                                 <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $plan->name }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">${{ $plan->price }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $plan->plan_name }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">RM{{ $plan->price }}</td>
                                     <td class="px-6 py-4">{{ $plan->description }}</td>
                                 </tr>
                             @endforeach

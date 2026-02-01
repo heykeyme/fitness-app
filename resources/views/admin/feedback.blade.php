@@ -17,7 +17,7 @@
                     @foreach($feedbacks as $feedback)
                         <tr>
                             <td class="px-6 py-4 whitespace-nowrap">{{ $feedback->user->name }}</td>
-                            <td class="px-6 py-4">{{ $feedback->content }}</td>
+                            <td class="px-6 py-4">{{ $feedback->message }}</td>
                             <td class="px-6 py-4 whitespace-nowrap">{{ $feedback->created_at->diffForHumans() }}</td>
                         </tr>
                     @endforeach
