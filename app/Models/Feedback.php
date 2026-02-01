@@ -13,7 +13,7 @@ class Feedback extends Model
 
     protected $fillable = [
         'user_id',
-        'content',
+        'message',
     ];
 
     public function user()

@@ -11,12 +11,12 @@ class FeedbackController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'content' => 'required|string',
+            'message' => 'required|string',
         ]);
 
         Feedback::create([
             'user_id' => Auth::id(),
-            'content' => $request->content,
+            'message' => $request->message,
         ]);
 
         return back()->with('success', 'Thank you for your feedback!');
