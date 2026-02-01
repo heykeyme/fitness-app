@@ -7,6 +7,10 @@ use App\Models\Announcement;
 use App\Models\Feedback;
 use App\Models\MembershipPlan;
 use App\Models\FitnessClass;
+use App\Models\User;
+use App\Models\Subscription;
+use App\Models\Payment;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,7 +18,22 @@ class AdminController extends Controller
 {
     public function dashboard()
     {
-        return view('admin.dashboard');
+        $totalMembers = User::where('role_id', 2)->count();
+        $totalSubscriptions = Subscription::count();
+        $totalRevenue = Payment::sum('amount');
+
+        $startOfMonth = Carbon::now()->startOfMonth();
+        $endOfMonth = Carbon::now()->endOfMonth();
+
+        $newMembersThisMonth = User::where('role_id', 2)
+                                   ->whereBetween('created_at', [$startOfMonth, $endOfMonth])
+                                   ->count();
+        
+        $announcements = Announcement::latest()->take(5)->get();
+
+        $activityLogs = ActivityLog::with('user')->latest()->take(5)->get();
+
+        return view('admin.dashboard', compact('totalMembers', 'totalSubscriptions', 'totalRevenue', 'newMembersThisMonth', 'announcements', 'activityLogs'));
     }
 
     public function showPlans()

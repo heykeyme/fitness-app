@@ -7,16 +7,6 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-8">
-                <div class="p-6 bg-white border-b border-gray-200">
-                    <nav class="flex flex-wrap gap-4">
-                        <a href="{{ route('admin.plans') }}" class="text-blue-500 hover:text-blue-700">Manage Plans</a>
-                        <a href="{{ route('admin.announcements') }}" class="text-blue-500 hover:text-blue-700">Manage Announcements</a>
-                        <a href="{{ route('admin.feedback') }}" class="text-blue-500 hover:text-blue-700">View Feedback</a>
-                        <a href="{{ route('admin.activity-log') }}" class="text-blue-500 hover:text-blue-700">View Activity Log</a>
-                    </nav>
-                </div>
-            </div>
 
             <!-- Stat Cards -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -24,28 +14,28 @@
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 bg-white border-b border-gray-200">
                         <h3 class="text-lg font-semibold text-gray-700">Total Members</h3>
-                        <p class="text-3xl font-bold text-indigo-600">1,234</p>
+                        <p class="text-3xl font-bold text-indigo-600">{{ $totalMembers }}</p>
                     </div>
                 </div>
                 <!-- Total Subscriptions -->
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 bg-white border-b border-gray-200">
                         <h3 class="text-lg font-semibold text-gray-700">Total Subscriptions</h3>
-                        <p class="text-3xl font-bold text-indigo-600">567</p>
+                        <p class="text-3xl font-bold text-indigo-600">{{ $totalSubscriptions }}</p>
                     </div>
                 </div>
                 <!-- Revenue this Month -->
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 bg-white border-b border-gray-200">
                         <h3 class="text-lg font-semibold text-gray-700">Revenue this Month</h3>
-                        <p class="text-3xl font-bold text-indigo-600">$5,432</p>
+                        <p class="text-3xl font-bold text-indigo-600">${{ number_format($totalRevenue, 2) }}</p>
                     </div>
                 </div>
                 <!-- New Members this Month -->
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 bg-white border-b border-gray-200">
                         <h3 class="text-lg font-semibold text-gray-700">New Members this Month</h3>
-                        <p class="text-3xl font-bold text-indigo-600">89</p>
+                        <p class="text-3xl font-bold text-indigo-600">{{ $newMembersThisMonth }}</p>
                     </div>
                 </div>
             </div>
@@ -62,14 +52,16 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            <tr>
-                                <td class="px-6 py-4 whitespace-nowrap">New Yoga Class</td>
-                                <td class="px-6 py-4 whitespace-nowrap">2026-01-26</td>
-                            </tr>
-                            <tr>
-                                <td class="px-6 py-4 whitespace-nowrap">Gym Maintenance</td>
-                                <td class="px-6 py-4 whitespace-nowrap">2026-01-25</td>
-                            </tr>
+                            @forelse ($announcements as $announcement)
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $announcement->title }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $announcement->created_at->format('Y-m-d') }}</td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-center" colspan="2">No announcements yet.</td>
+                                </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>
@@ -78,26 +70,27 @@
             <!-- Recent Member Activity -->
             <div class="mt-8 bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
-                    <h3 class="text-lg font-semibold text-gray-700 mb-4">Recent Member Activity</h3>
+                    <h3 class="text-lg font-semibold text-gray-700 mb-4">Recent Activity</h3>
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
                             <tr>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Member</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
                                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Activity</th>
                                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            <tr>
-                                <td class="px-6 py-4 whitespace-nowrap">John Doe</td>
-                                <td class="px-6 py-4 whitespace-nowrap">Checked in</td>
-                                <td class="px-6 py-4 whitespace-nowrap">2026-01-27</td>
-                            </tr>
-                            <tr>
-                                <td class="px-6 py-4 whitespace-nowrap">Jane Smith</td>
-                                <td class="px-6 py-4 whitespace-nowrap">Booked a class</td>
-                                <td class="px-6 py-4 whitespace-nowrap">2026-01-27</td>
-                            </tr>
+                            @forelse ($activityLogs as $log)
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $log->user->name }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $log->action }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $log->created_at->format('Y-m-d') }}</td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-center" colspan="3">No recent activity.</td>
+                                </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>
